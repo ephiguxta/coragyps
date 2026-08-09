@@ -10,15 +10,23 @@ main() {
 		exit 1
 	}
 
-	# TODO: variável serve de lembrete para funcionalidade futura
-	# local file_hosts='/etc/hosts'
+	local addr=""
+	local -i rustscan_task=1
+
+	local file_hosts='/etc/hosts'
 
 	local ip="$1"
-	local domain=$(get_host "$ip")
-	local addr="$ip $domain"
+	local domain=$(get_domain "$ip")
 
-	# TODO: inserir direto no /etc/hosts
-	echo -n "$addr"
+	if [ -z $domain ]; then
+		#TODO: caso não tenha necessidade de adicionar o domínio, execute o rustscan
+		echo "TODO"
+	else
+		addr="$ip $domain"
+		#FIXME: teste isso na prática antes de atualizar a funcionalidade no readme
+		echo -n "$addr" | sudo tee -a "$file_hosts"
+	fi
+
 }
 
 main "$@"
